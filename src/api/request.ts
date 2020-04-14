@@ -1,35 +1,39 @@
-import axios, { AxiosError, AxiosResponse } from 'axios'
-import { Dictionary } from 'vue-router/types/router'
+import axios, { AxiosError, AxiosResponse } from "axios";
 
-export const baseUrl = "http://127.0.0.1:8000/api/"
+export const baseUrl = "http://127.0.0.1:8000/api/";
 
 const responseHandler = (response: AxiosResponse) => {
-    if (response.data) {
-        return response.data
-    } else {
-        throw new Error('An error occurred')
-    }
-}
+  if (response.data) {
+    return response.data;
+  } else {
+    throw new Error("An error occurred");
+  }
+};
 
 const errorHandler = (error: AxiosError) => {
-    if (error.response && error.response.data && error.response.data.message) {
-        throw new Error(error.response.data.message)
-    } else if (error.request) {
-        throw new Error('Request error')
-    } else {
-        throw new Error(error.message)
-    }
-}
+  if (error.response && error.response.data && error.response.data.message) {
+    throw new Error(error.response.data.message);
+  } else if (error.request) {
+    throw new Error("Request error");
+  } else {
+    throw new Error(error.message);
+  }
+};
 
-export const getResourceRequest = (url: string, id?: number) => {
-    if (id === undefined) {
-        alert(id)
-        return axios.get(`${baseUrl}${url}`)
-        .then(responseHandler)
-        .catch(errorHandler)
-    } else {
-        return axios.get(`${baseUrl}${url}${id}/`)
-        .then(responseHandler)
-        .catch(errorHandler)
-    }
-}
+export const getResourceRequest = (resource: string, id: number) => {
+  return axios
+    .get(`${baseUrl}${resource}/${id}/`)
+    .then(responseHandler)
+    .catch(errorHandler);
+};
+
+export const getResourcesRequest = (
+  availability: string,
+  id: number,
+  resource: string
+) => {
+  return axios
+    .get(`${baseUrl}${availability}/${id}/${resource}/`)
+    .then(responseHandler)
+    .catch(errorHandler);
+};

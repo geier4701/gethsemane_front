@@ -1,16 +1,19 @@
 <template>
-    <div>
-        <p>Check out your ship bro</p>
-        <ShipViewer/>
-    </div>
+  <div>
+    <p>Check out your ship bro</p>
+    <ShipViewer />
+  </div>
 </template>
 
 <script>
-import ShipViewer from "../components/ShipViewer"
+import ShipViewer from "../components/ShipViewer";
 
 export default {
-    components: {
-        ShipViewer
-    }
-}
+  components: {
+    ShipViewer
+  },
+  mounted() {
+    // this.$store.dispatch('loadShip', {'id': 1})
+  }
+};
 </script>

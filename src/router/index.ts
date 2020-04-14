@@ -22,8 +22,7 @@ const routes: Array<RouteConfig> = [
   {
     path: "/viewship",
     name: "Load Ship",
-    component: () =>
-      import("../views/ViewShip.vue")
+    component: () => import("../views/ViewShip.vue")
   }
 ];
 
