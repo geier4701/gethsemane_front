@@ -5,88 +5,58 @@
       >{{ $store.getters.ship.name }}
     </p>
     <input @change="addShipName" name="shipName" />
-    <p>
-      Select {{ $store.getters.ship.name }}'s radar:
-      <select v-model="selectedRadar">
-        <option
-          v-for="option in radarOptions"
-          v-bind:key="option.key"
-          v-bind:value="option.value"
-        >
-          {{ option.text }}
-        </option>
-      </select>
-      Mass: {{ availableRadars[selectedRadar].mass }}
-    </p>
+    <RadarSelector
+      :listedRadars="this.radarList"
+      :isLoadedShip="this.getIsLoaded()"
+    />
+    <JumpDriveSelector
+      :listedJumpDrives="this.jumpDriveList"
+      :isLoadedShip="this.getIsLoaded()"
+    />
   </div>
 </template>
 
 <script>
+import RadarSelector from "./RadarSelector";
+import JumpDriveSelector from "./JumpDriveSelector";
+
 export default {
+  name: "ShipViewer",
+  props: { loadedShip: {} },
+  components: {
+    RadarSelector,
+    JumpDriveSelector
+  },
   created() {
     // this.$store.dispatch('loadShip', {'id': 1})
-    this.availableRadars = this.loadComponents("radar");
-    this.radarOptions = this.formatComponents("radar", this.availableRadars);
+    // this.$store.dispatch(
+    //   'loadCharacterComponents',
+    //   {
+    //     componentType: 'radar',
+    //     characterId: this.$store.getters.characterId
+    //   }
+    // )
   },
   data: function() {
     return {
-      selectedRadar: 1,
-      radarOptions: [],
-      availableRadars: []
+      radarList: this.listById(this.$store.getters.radars),
+      jumpDriveList: this.listById(this.$store.getters.jumpDrives)
     };
   },
   methods: {
     addShipName(event) {
       this.$store.commit("setShipName", event.target.value);
     },
-    loadComponents(componentType) {
-      if (componentType === "radar") {
-        const formattedRadars = {};
-        for (const radar of this.$store.getters.radars) {
-          const radarId = radar.id;
-          formattedRadars[radarId] = radar;
-        }
-        return formattedRadars;
+    listById(components) {
+      const listedComponents = { 0: {} };
+      for (const component of components) {
+        listedComponents[component.id] = component;
       }
+      return listedComponents;
     },
-    formatComponents(componentType, components) {
-      if (componentType === "radar") {
-        const formattedRadars = [];
-        for (const radar of components) {
-          formattedRadars.push({
-            text: radar.name,
-            key: radar.name,
-            value: radar.id
-          });
-        }
-        return formattedRadars;
-      }
+    getIsLoaded() {
+      return this.loadedShip.id !== null;
     }
   }
 };
-
-// @Component({
-//   components: {}
-// })
-// export default class ShipCreation extends Vue {
-//   ship: Ship;
-
-//   constructor() {
-//     super();
-//     this.ship = this.$store.getters.ship;
-//   }
-
-//   addShipName(event: any) {
-//       this.$store.commit("setShipName", event.target.value);
-//   }
-
-//   populateSelect(radar: string) {
-//       const availableRadars = this.$store.getters.radars;
-//       const generatedValues = [];
-//       for(radar in availableRadars) {
-//           generatedValues.push('<option value="abcd">ABCD</option>')
-//       }
-//       return generatedValues;
-//   }
-// }
 </script>

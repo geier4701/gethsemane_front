@@ -1,7 +1,7 @@
 <template>
   <div>
     <p>Check out your ship bro</p>
-    <ShipViewer />
+    <ShipViewer :loadedShip="loadedShip" />
   </div>
 </template>
 
@@ -14,6 +14,11 @@ export default {
   },
   mounted() {
     // this.$store.dispatch('loadShip', {'id': 1})
+  },
+  data: function() {
+    return {
+      loadedShip: this.$store.getters.ship
+    };
   }
 };
 </script>
