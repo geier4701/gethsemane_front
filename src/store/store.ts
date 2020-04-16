@@ -41,6 +41,9 @@ export default new Vuex.Store({
       ]
   },
   mutations: {
+    setShip(state, ship) {
+      state.ship = ship;
+    },
     setShipName(state, shipName) {
       state.ship.name = shipName;
     },
@@ -74,7 +77,7 @@ export default new Vuex.Store({
     setShipClasses(state, shipClasses) {
       state.shipClasses = shipClasses;
     },
-    setShipClasse(state, shipClass) {
+    setShipClass(state, shipClass) {
       state.ship.shipClass = shipClass;
     }
   },

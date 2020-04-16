@@ -1,7 +1,7 @@
 <template>
   <div>
     Select {{ $store.getters.ship.name }}'s computer:
-    <select v-model="selectedComputer">
+    <select @change="addComputer" v-model="selectedComputer">
       <option
         v-for="option in computerOptions"
         v-bind:key="option.key"
@@ -44,6 +44,10 @@ export default {
       } else {
         return 0;
       }
+    },
+    addComputer() {
+      this.$store.commit("setShipComputer", this.listedComputers[this.selectedComputer]);
+      this.$emit("validate-ship");
     }
   }
 };

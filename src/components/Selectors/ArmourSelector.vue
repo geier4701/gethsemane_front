@@ -1,7 +1,7 @@
 <template>
   <div>
     Select {{ $store.getters.ship.name }}'s armour:
-    <select v-model="selectedArmour">
+    <select @change="addArmour" v-model="selectedArmour">
       <option
         v-for="option in armourOptions"
         v-bind:key="option.key"
@@ -43,6 +43,10 @@ export default {
       } else {
         return 0;
       }
+    },
+    addArmour() {
+      this.$store.commit("setShipArmour", this.listedArmours[this.selectedArmour]);
+      this.$emit("validate-ship");
     }
   }
 };

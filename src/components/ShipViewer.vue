@@ -5,26 +5,32 @@
     <ShipClassSelector
       :listedShipClasses="this.shipClassList"
       :isLoadedShip="this.getIsLoaded()"
+      @validate-ship="validateShip"
     />
     <RadarSelector
       :listedRadars="this.radarList"
       :isLoadedShip="this.getIsLoaded()"
+      @validate-ship="validateShip"
     />
     <JumpDriveSelector
       :listedJumpDrives="this.jumpDriveList"
       :isLoadedShip="this.getIsLoaded()"
+      @validate-ship="validateShip"
     />
     <ImpulseEngineSelector 
       :listedImpulseEngines="this.impulseEngineList"
       :isLoadedShip="this.getIsLoaded()"
+      @validate-ship="validateShip"
     />
     <ComputerSelector
       :listedComputers="this.computerList"
       :isLoadedShip="this.getIsLoaded()"
+      @validate-ship="validateShip"
     />
     <ArmourSelector
       :listedArmours="this.armourList"
       :isLoadedShip="this.getIsLoaded()"
+      @validate-ship="validateShip"
     />
   </div>
 </template>
@@ -90,7 +96,7 @@ export default {
     },
     // TODO: Check ship weight whenever a component is added/changed
     validateShip(component) {
-      return true;
+      console.log("validated!");
     }
   }
 };

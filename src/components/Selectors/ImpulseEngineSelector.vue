@@ -1,7 +1,7 @@
 <template>
   <div>
     Select {{ $store.getters.ship.name }}'s impulse engine:
-    <select v-model="selectedImpulseEngine">
+    <select @change="addImpulseEngine" v-model="selectedImpulseEngine">
       <option
         v-for="option in impulseEngineOptions"
         v-bind:key="option.key"
@@ -44,6 +44,10 @@ export default {
       } else {
         return 0;
       }
+    },
+    addImpulseEngine() {
+      this.$store.commit("setShipImpulseEngine", this.listedImpulseEngines[this.selectedImpulseEngine]);
+      this.$emit('validate-ship');
     }
   }
 };

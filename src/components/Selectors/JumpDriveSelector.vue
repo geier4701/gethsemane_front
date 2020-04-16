@@ -46,7 +46,8 @@ export default {
       }
     },
     addJumpDrive() {
-      return true;
+      this.$store.commit("setShipJumpDrive", this.listedJumpDrives[this.selectedJumpDrive]);
+      this.$emit("validate-ship");
     }
   }
 };

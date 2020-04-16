@@ -1,7 +1,7 @@
 <template>
   <div>
     Select {{ $store.getters.ship.name }}'s class:
-    <select v-model="selectedShipClass">
+    <select @change="addShipClass" v-model="selectedShipClass">
       <option
         v-for="option in shipClassOptions"
         v-bind:key="option.key"
@@ -44,6 +44,10 @@ export default {
       } else {
         return 0;
       }
+    },
+    addShipClass() {
+      this.$store.commit("setShipClass", this.listedShipClasses[this.selectedShipClass]);
+      this.$emit("validate-ship");
     }
   }
 };

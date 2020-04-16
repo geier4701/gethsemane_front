@@ -1,7 +1,7 @@
 <template>
   <div>
     Select {{ $store.getters.ship.name }}'s radar:
-    <select v-model="selectedRadar">
+    <select @change="addRadar" v-model="selectedRadar">
       <option
         v-for="option in radarOptions"
         v-bind:key="option.key"
@@ -44,6 +44,10 @@ export default {
       } else {
         return 0;
       }
+    },
+    addRadar() {
+      this.$store.commit("setShipRadar", this.listedRadars[this.selectedRadar]);
+      this.$emit("validate-ship");
     }
   }
 };
