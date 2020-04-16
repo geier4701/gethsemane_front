@@ -1,7 +1,7 @@
 <template>
   <div>
     Select {{ $store.getters.ship.name }}'s jump drive:
-    <select v-model="selectedJumpDrive">
+    <select @change="addJumpDrive" v-model="selectedJumpDrive">
       <option
         v-for="option in jumpDriveOptions"
         v-bind:key="option.key"
@@ -44,6 +44,9 @@ export default {
       } else {
         return 0;
       }
+    },
+    addJumpDrive() {
+      return true;
     }
   }
 };

@@ -11,7 +11,6 @@ export default class Computer {
     name: string,
     mass: number,
     repairCost: number,
-    energyCost: number,
     speed: number,
     capacity: number
   ) {

@@ -1,10 +1,11 @@
 <template>
   <div>
-    <p>
-      <label for="shipName">Your ship name: </label
-      >{{ $store.getters.ship.name }}
-    </p>
-    <input @change="addShipName" name="shipName" />
+    <label for="shipName">Your ship name: </label >
+    <input @change="addShipName" name="shipName" v-model="this.loadedShip.name" />
+    <ShipClassSelector
+      :listedShipClasses="this.shipClassList"
+      :isLoadedShip="this.getIsLoaded()"
+    />
     <RadarSelector
       :listedRadars="this.radarList"
       :isLoadedShip="this.getIsLoaded()"
@@ -13,19 +14,39 @@
       :listedJumpDrives="this.jumpDriveList"
       :isLoadedShip="this.getIsLoaded()"
     />
+    <ImpulseEngineSelector 
+      :listedImpulseEngines="this.impulseEngineList"
+      :isLoadedShip="this.getIsLoaded()"
+    />
+    <ComputerSelector
+      :listedComputers="this.computerList"
+      :isLoadedShip="this.getIsLoaded()"
+    />
+    <ArmourSelector
+      :listedArmours="this.armourList"
+      :isLoadedShip="this.getIsLoaded()"
+    />
   </div>
 </template>
 
 <script>
-import RadarSelector from "./RadarSelector";
-import JumpDriveSelector from "./JumpDriveSelector";
+import ShipClassSelector from "./Selectors/ShipClassSelector";
+import RadarSelector from "./Selectors/RadarSelector";
+import JumpDriveSelector from "./Selectors/JumpDriveSelector";
+import ImpulseEngineSelector from "./Selectors/ImpulseEngineSelector";
+import ComputerSelector from "./Selectors/ComputerSelector";
+import ArmourSelector from "./Selectors/ArmourSelector";
 
 export default {
   name: "ShipViewer",
   props: { loadedShip: {} },
   components: {
+    ShipClassSelector,
     RadarSelector,
-    JumpDriveSelector
+    JumpDriveSelector,
+    ImpulseEngineSelector,
+    ComputerSelector,
+    ArmourSelector
   },
   created() {
     // this.$store.dispatch('loadShip', {'id': 1})
@@ -36,11 +57,21 @@ export default {
     //     characterId: this.$store.getters.characterId
     //   }
     // )
+    this.radarList = this.listById(this.$store.getters.radars);
+    this.jumpDriveList = this.listById(this.$store.getters.jumpDrives);
+    this.impulseEngineList = this.listById(this.$store.getters.impulseEngines);
+    this.computerList = this.listById(this.$store.getters.computers);
+    this.armourList = this.listById(this.$store.getters.armours);
+    this.shipClassList = this.listById(this.$store.getters.shipClasses);
   },
   data: function() {
     return {
-      radarList: this.listById(this.$store.getters.radars),
-      jumpDriveList: this.listById(this.$store.getters.jumpDrives)
+      radarList: [],
+      jumpDriveList: [],
+      impulseEngineList: [],
+      computerList: [],
+      armourList: [],
+      shipClassList: []
     };
   },
   methods: {
@@ -56,6 +87,10 @@ export default {
     },
     getIsLoaded() {
       return this.loadedShip.id !== null;
+    },
+    // TODO: Check ship weight whenever a component is added/changed
+    validateShip(component) {
+      return true;
     }
   }
 };
