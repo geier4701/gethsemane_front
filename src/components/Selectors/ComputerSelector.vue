@@ -10,8 +10,7 @@
         {{ option.text }}
       </option>
     </select>
-    Mass: {{ listedComputers[selectedComputer].mass }} Repair Cost:
-    COMPUTERS CANNOT BE REPAIRED Speed:
+    Mass: {{ listedComputers[selectedComputer].mass }} Speed:
     {{ listedComputers[selectedComputer].speed }} Capacity:
     {{ listedComputers[selectedComputer].capacity }}
   </div>

@@ -11,8 +11,7 @@
       </option>
     </select>
     Mass: {{ listedJumpDrives[selectedJumpDrive].mass }} Repair Cost:
-    {{ listedJumpDrives[selectedJumpDrive].repairCost }} Tracking Style:
-    {{ listedJumpDrives[selectedJumpDrive].trackingStyle }} Energy Cost:
+    {{ listedJumpDrives[selectedJumpDrive].repairCost }} Energy Cost:
     {{ listedJumpDrives[selectedJumpDrive].energyCost }}
   </div>
 </template>

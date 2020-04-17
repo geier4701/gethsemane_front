@@ -8,13 +8,28 @@ import ImpulseEngine from '@/types/ImpulseEngine';
 import Computer from '@/types/Computer';
 import Armour from '@/types/Armour';
 import ShipClass from '@/types/ShipClass';
+import Weapon from '@/types/Weapon';
+import Ammunition from '@/types/Ammunition';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     characterId: 1,
-    ship: new Ship(null, "Your Ship"),
+    ship: new Ship(
+      null,
+      "Your Ship",
+      new Radar(1, "Scanny", 15, 45, "Active", 5),
+      new JumpDrive(1, "Cricket", 25, 35, 40),
+      new ImpulseEngine(1, "Pusher", 10, 25, 15, 100),
+      new Computer(1, "Dorito", 15, 0, 10, 50),
+      new Armour(4, "Paper", 10, 0, "Ablative"),
+      new ShipClass(2, "Scout", 50, 25, 75, 70),
+      [new Weapon(1, "Laser Pointer", 10, 10, 15, 1000, 10, "Crystal", 100000),
+      new Weapon(2, "Totalator", 20, 25, 5, 100, 25, "Missile", 100)],
+      [new Ammunition(6, "Red Crystal", 5, 0, "Energy", "Crystal", 100),
+      new Ammunition(8, "Tiem for bang", 15, 0, "Explosive", "Missile", 10)]
+    ),
     radars: [
       new Radar(1, "Scanny", 15, 45, "Active", 5),
       new Radar(2, "Scannist", 20, 60, "Active", 10)
@@ -38,6 +53,14 @@ export default new Vuex.Store({
       shipClasses: [
         new ShipClass(2, "Scout", 50, 25, 75, 70),
         new ShipClass(8, "Interceptor", 60, 30, 85, 80)
+      ],
+      weapons: [
+        new Weapon(1, "Laser Pointer", 10, 10, 15, 1000, 10, "Crystal", 100000),
+        new Weapon(2, "Totalator", 20, 25, 5, 100, 25, "Missile", 100)
+      ],
+      ammunitions: [
+        new Ammunition(6, "Red Crystal", 5, 0, "Energy", "Crystal", 100),
+        new Ammunition(8, "Tiem for bang", 15, 0, "Explosive", "Missile", 10)
       ]
   },
   mutations: {
@@ -79,6 +102,34 @@ export default new Vuex.Store({
     },
     setShipClass(state, shipClass) {
       state.ship.shipClass = shipClass;
+    },
+    setWeapons(state, weapons) {
+      state.weapons = weapons;
+    },
+    setShipWeapon(state, weapon) {
+      state.ship.weapons.push(weapon);
+    },
+    removeShipWeapon(state, weaponId) {
+      for (let i=0; i<state.ship.weapons.length; i++) {
+        if (state.ship.weapons[i].id === weaponId) {
+          state.ship.weapons.splice(i, 1);
+          break;
+        }
+      }
+    },
+    setAmmunitions(state, ammunitions) {
+      state.ship.ammunitions = ammunitions;
+    },
+    setShipAmmunition(state, ammunition) {
+      state.ship.ammunitions.push(ammunition);
+    },
+    removeShipAmmunition(state, ammunitionId) {
+      for (let i=0; i<state.ship.ammunitions.length; i++) {
+        if (state.ship.ammunitions[i].id === ammunitionId) {
+          state.ship.ammunitions.splice(i, 1);
+          break;
+        }
+      }
     }
   },
   getters: {
@@ -89,7 +140,9 @@ export default new Vuex.Store({
     impulseEngines: state => state.impulseEngines,
     computers: state => state.computers,
     armours: state => state.armours,
-    shipClasses: state => state.shipClasses
+    shipClasses: state => state.shipClasses,
+    weapons: state=> state.weapons,
+    ammunitions: state => state.ammunitions
   },
   actions: {
     loadShip({ commit }, payload) {

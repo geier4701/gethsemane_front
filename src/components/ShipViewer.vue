@@ -32,6 +32,16 @@
       :isLoadedShip="this.getIsLoaded()"
       @validate-ship="validateShip"
     />
+    <WeaponSelector
+      :listedWeapons="this.weaponList"
+      :isLoadedShip="this.getIsLoaded()"
+      @validate-ship="validateShip"
+    />
+    <AmmunitionSelector
+      :listedAmmo="this.ammoList"
+      :isLoadedShip="this.getIsLoaded()"
+      @validate-ship="validateShip"
+    />
   </div>
 </template>
 
@@ -42,6 +52,8 @@ import JumpDriveSelector from "./Selectors/JumpDriveSelector";
 import ImpulseEngineSelector from "./Selectors/ImpulseEngineSelector";
 import ComputerSelector from "./Selectors/ComputerSelector";
 import ArmourSelector from "./Selectors/ArmourSelector";
+import WeaponSelector from "./Selectors/WeaponSelector";
+import AmmunitionSelector from "./Selectors/AmmoSelector";
 
 export default {
   name: "ShipViewer",
@@ -52,7 +64,9 @@ export default {
     JumpDriveSelector,
     ImpulseEngineSelector,
     ComputerSelector,
-    ArmourSelector
+    ArmourSelector,
+    WeaponSelector,
+    AmmunitionSelector
   },
   created() {
     // this.$store.dispatch('loadShip', {'id': 1})
@@ -69,6 +83,8 @@ export default {
     this.computerList = this.listById(this.$store.getters.computers);
     this.armourList = this.listById(this.$store.getters.armours);
     this.shipClassList = this.listById(this.$store.getters.shipClasses);
+    this.weaponList = this.listById(this.$store.getters.weapons);
+    this.ammoList = this.listById(this.$store.getters.ammunitions);
   },
   data: function() {
     return {
@@ -77,7 +93,9 @@ export default {
       impulseEngineList: [],
       computerList: [],
       armourList: [],
-      shipClassList: []
+      shipClassList: [],
+      weaponList: [],
+      ammoList: []
     };
   },
   methods: {

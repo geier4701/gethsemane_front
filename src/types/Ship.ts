@@ -17,8 +17,8 @@ export default class Ship {
   computer: Computer | null;
   armour: Armour | null;
   shipClass: ShipClass | null;
-  weapons: Array<Weapon> | null;
-  ammunitions: Array<Ammunition> | null;
+  weapons: Array<Weapon>;
+  ammunitions: Array<Ammunition>;
   program: Program | null;
 
   constructor(
@@ -30,8 +30,8 @@ export default class Ship {
     computer: Computer | null = null,
     armour: Armour | null = null,
     shipClass: ShipClass | null = null,
-    weapons: Array<Weapon> | null = null,
-    ammunitions: Array<Ammunition> | null = null,
+    weapons: Array<Weapon> = [],
+    ammunitions: Array<Ammunition> = [],
     program: Program | null = null
   ) {
     this.id = id;
