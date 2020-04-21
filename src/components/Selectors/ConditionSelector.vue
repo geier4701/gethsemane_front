@@ -1,7 +1,7 @@
 <template>
   <div>
     <p v-for="(condition, idx) in addedConditions" :key="idx">
-      Target: {{ condition.target }}
+      Target: {{ condition.target }} Name: {{ condition.conditionType }}
       <span v-if="condition.conditionType != 'IsDisabled'">
         At Least: {{ condition.atLeast }} At Most: {{ condition.atMost }}
       </span>
@@ -62,7 +62,7 @@
       <p v-if="this.selectedConditionType === 'IsDisabled'">
         <select v-if="target === 'self'" v-model="selectedComponent">
           <option
-            v-for="option in componentOptions"
+            v-for="option in this.componentOptions"
             v-bind:key="option.key"
             v-bind:value="option.value"
           >
@@ -81,7 +81,7 @@
         <label for="atMost">and at most </label>
         <input name="atMost" v-model="atMost" />
       </p>
-      <button v-on:click="addCondition">Add</button>
+      <button @click="addCondition">Add</button>
     </div>
   </div>
 </template>
@@ -90,14 +90,17 @@
 export default {
   name: "ConditionSelector",
   created() {
-    (this.selectedConditionType = ""),
-      (this.target = "self"),
-      (this.ammunitionType = {}),
-      (this.atLeast = ""),
-      (this.atMost = ""),
-      (this.selectedComponent = {}),
-      (this.enemyComponent = ""),
-      (this.addedConditions = []);
+    this.selectedConditionType = "";
+    this.target = "self";
+    this.ammunitionType = {};
+    this.atLeast = "";
+    this.atMost = "";
+    this.selectedComponent = {};
+    this.enemyComponent = "";
+    this.addedConditions = {};
+  },
+  props: {
+    componentOptions: {}
   },
   data: function() {
     return {
@@ -108,35 +111,11 @@ export default {
       atMost: {},
       selectedComponent: {},
       enemyComponent: {},
-      componentOptions: this.formatComponents(this.getRepairableComponents()),
       conditionIndex: 0,
       addedConditions: this.$store.getters.conditions
     };
   },
   methods: {
-    getRepairableComponents() {
-      const ship = this.$store.getters.ship;
-      const listedRepairableComponents = {};
-      listedRepairableComponents[ship.radar.name] = ship.radar;
-      listedRepairableComponents[ship.impulseEngine.name] = ship.impulseEngine;
-      listedRepairableComponents[ship.jumpDrive.name] = ship.jumpDrive;
-      for (const weapon of ship.weapons) {
-        listedRepairableComponents[weapon.name] = weapon;
-      }
-      return listedRepairableComponents;
-    },
-    formatComponents(components) {
-      const formattedComponents = {};
-      for (const componentName in components) {
-        const component = components[componentName];
-        formattedComponents[component.name] = {
-          text: component.name,
-          key: component.name,
-          value: component
-        };
-      }
-      return formattedComponents;
-    },
     addCondition() {
       const builtCondition = {
         conditionType: this.selectedConditionType,
@@ -151,7 +130,8 @@ export default {
       this.conditionIndex++;
       this.$store.commit("setCondition", builtCondition);
       this.selectedConditionType = "";
-      (this.target = "self"), (this.ammunitionType = {});
+      this.target = "self";
+      this.ammunitionType = {};
       this.atLeast = "";
       this.atMost = "";
       this.selectedComponent = {};

@@ -11,6 +11,7 @@ import ShipClass from "@/types/ShipClass";
 import Weapon from "@/types/Weapon";
 import Ammunition from "@/types/Ammunition";
 import Condition from "@/types/Condition";
+import Action from "@/types/Action";
 
 Vue.use(Vuex);
 
@@ -70,7 +71,7 @@ export default new Vuex.Store({
     program: [],
     subroutines: [],
     conditions: [new Condition(null, "At Least", null, null, "self")],
-    actions: []
+    actions: [new Action(null, "Delay", null, null, null)]
   },
   mutations: {
     setShip(state, ship) {
@@ -145,6 +146,12 @@ export default new Vuex.Store({
     },
     removeCondition(state, idx) {
       state.conditions.splice(idx, 1);
+    },
+    setAction(state, action) {
+      state.actions.push(action);
+    },
+    removeAction(state, idx) {
+      state.actions.splice(idx, 1);
     }
   },
   getters: {
@@ -159,7 +166,8 @@ export default new Vuex.Store({
     weapons: state => state.weapons,
     ammunitions: state => state.ammunitions,
     program: state => state.program,
-    conditions: state => state.conditions
+    conditions: state => state.conditions,
+    actions: state => state.actions
   },
   actions: {
     loadShip({ commit }, payload) {
