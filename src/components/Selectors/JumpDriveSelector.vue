@@ -45,7 +45,10 @@ export default {
       }
     },
     addJumpDrive() {
-      this.$store.commit("setShipJumpDrive", this.listedJumpDrives[this.selectedJumpDrive]);
+      this.$store.commit(
+        "setShipJumpDrive",
+        this.listedJumpDrives[this.selectedJumpDrive]
+      );
       this.$emit("validate-ship");
     }
   }

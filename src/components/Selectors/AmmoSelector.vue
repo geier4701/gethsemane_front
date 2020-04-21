@@ -1,12 +1,10 @@
 <template>
   <div>
-    Current munitions: 
+    Current munitions:
     <p v-for="(ammo, idx) in addedAmmo" :key="idx">
-      Name: {{ ammo.name }}
-      Mass: {{ ammo.mass }} 
-      Ammunition Type: {{ ammo.ammunitionType }}
-      Damage Type: {{ ammo.damageType }}
-      Ammunition Count: {{ ammo.maxAmmunition }}
+      Name: {{ ammo.name }} Mass: {{ ammo.mass }} Ammunition Type:
+      {{ ammo.ammunitionType }} Damage Type: {{ ammo.damageType }} Ammunition
+      Count: {{ ammo.maxAmmunition }}
       <button @click="removeAmmo(idx, ammo.id)">Remove</button>
     </p>
     <div>
@@ -20,9 +18,9 @@
           {{ option.text }}
         </option>
       </select>
-      Mass: {{ listedAmmo[selectedAmmo].mass }} Ammunition Type: 
-      {{ listedAmmo[selectedAmmo].ammunitionType }} Damage Type: 
-      {{ listedAmmo[selectedAmmo].damageType }} Ammunition Count: 
+      Mass: {{ listedAmmo[selectedAmmo].mass }} Ammunition Type:
+      {{ listedAmmo[selectedAmmo].ammunitionType }} Damage Type:
+      {{ listedAmmo[selectedAmmo].damageType }} Ammunition Count:
       {{ listedAmmo[selectedAmmo].maxAmmunition }}
       <button v-on:click="addAmmo">Add</button>
     </div>
@@ -61,10 +59,17 @@ export default {
       }
     },
     addAmmo() {
-      this.$set(this.addedAmmo, this.ammoIndex, this.listedAmmo[this.selectedAmmo])
+      this.$set(
+        this.addedAmmo,
+        this.ammoIndex,
+        this.listedAmmo[this.selectedAmmo]
+      );
       this.ammoIndex++;
-      this.$store.commit("setShipAmmunition", this.listedAmmo[this.selectedAmmo]);
-      this.selectedAmmo=0;
+      this.$store.commit(
+        "setShipAmmunition",
+        this.listedAmmo[this.selectedAmmo]
+      );
+      this.selectedAmmo = 0;
       this.$emit("validate-ship");
     },
     removeAmmo(idx, ammoId) {

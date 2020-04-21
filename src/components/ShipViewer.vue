@@ -1,7 +1,11 @@
 <template>
   <div>
-    <label for="shipName">Your ship name: </label >
-    <input @change="addShipName" name="shipName" v-model="this.loadedShip.name" />
+    <label for="shipName">Your ship name: </label>
+    <input
+      @change="addShipName"
+      name="shipName"
+      v-model="this.loadedShip.name"
+    />
     <ShipClassSelector
       :listedShipClasses="this.shipClassList"
       :isLoadedShip="this.getIsLoaded()"
@@ -17,7 +21,7 @@
       :isLoadedShip="this.getIsLoaded()"
       @validate-ship="validateShip"
     />
-    <ImpulseEngineSelector 
+    <ImpulseEngineSelector
       :listedImpulseEngines="this.impulseEngineList"
       :isLoadedShip="this.getIsLoaded()"
       @validate-ship="validateShip"
@@ -42,6 +46,7 @@
       :isLoadedShip="this.getIsLoaded()"
       @validate-ship="validateShip"
     />
+    <ProgramCreator :listedSubroutines="this.subroutineList" />
   </div>
 </template>
 
@@ -54,6 +59,7 @@ import ComputerSelector from "./Selectors/ComputerSelector";
 import ArmourSelector from "./Selectors/ArmourSelector";
 import WeaponSelector from "./Selectors/WeaponSelector";
 import AmmunitionSelector from "./Selectors/AmmoSelector";
+import ProgramCreator from "./ProgramCreator";
 
 export default {
   name: "ShipViewer",
@@ -66,7 +72,8 @@ export default {
     ComputerSelector,
     ArmourSelector,
     WeaponSelector,
-    AmmunitionSelector
+    AmmunitionSelector,
+    ProgramCreator
   },
   created() {
     // this.$store.dispatch('loadShip', {'id': 1})
@@ -85,6 +92,7 @@ export default {
     this.shipClassList = this.listById(this.$store.getters.shipClasses);
     this.weaponList = this.listById(this.$store.getters.weapons);
     this.ammoList = this.listById(this.$store.getters.ammunitions);
+    this.subroutineList = this.listById(this.loadProgram());
   },
   data: function() {
     return {
@@ -112,8 +120,15 @@ export default {
     getIsLoaded() {
       return this.loadedShip.id !== null;
     },
+    loadProgram() {
+      if (this.getIsLoaded()) {
+        return this.$store.getters.program.subroutines;
+      } else {
+        return [];
+      }
+    },
     // TODO: Check ship weight whenever a component is added/changed
-    validateShip(component) {
+    validateShip() {
       console.log("validated!");
     }
   }

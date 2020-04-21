@@ -4,12 +4,13 @@ import { getResourceRequest, getResourcesRequest } from "../api/request";
 import Ship from "../types/Ship";
 import Radar from "../types/Radar";
 import JumpDrive from "@/types/JumpDrive";
-import ImpulseEngine from '@/types/ImpulseEngine';
-import Computer from '@/types/Computer';
-import Armour from '@/types/Armour';
-import ShipClass from '@/types/ShipClass';
-import Weapon from '@/types/Weapon';
-import Ammunition from '@/types/Ammunition';
+import ImpulseEngine from "@/types/ImpulseEngine";
+import Computer from "@/types/Computer";
+import Armour from "@/types/Armour";
+import ShipClass from "@/types/ShipClass";
+import Weapon from "@/types/Weapon";
+import Ammunition from "@/types/Ammunition";
+import Condition from "@/types/Condition";
 
 Vue.use(Vuex);
 
@@ -25,10 +26,14 @@ export default new Vuex.Store({
       new Computer(1, "Dorito", 15, 0, 10, 50),
       new Armour(4, "Paper", 10, 0, "Ablative"),
       new ShipClass(2, "Scout", 50, 25, 75, 70),
-      [new Weapon(1, "Laser Pointer", 10, 10, 15, 1000, 10, "Crystal", 100000),
-      new Weapon(2, "Totalator", 20, 25, 5, 100, 25, "Missile", 100)],
-      [new Ammunition(6, "Red Crystal", 5, 0, "Energy", "Crystal", 100),
-      new Ammunition(8, "Tiem for bang", 15, 0, "Explosive", "Missile", 10)]
+      [
+        new Weapon(1, "Laser Pointer", 10, 10, 15, 1000, 10, "Crystal", 100000),
+        new Weapon(2, "Totalator", 20, 25, 5, 100, 25, "Missile", 100)
+      ],
+      [
+        new Ammunition(6, "Red Crystal", 5, 0, "Energy", "Crystal", 100),
+        new Ammunition(8, "Tiem for bang", 15, 0, "Explosive", "Missile", 10)
+      ]
     ),
     radars: [
       new Radar(1, "Scanny", 15, 45, "Active", 5),
@@ -42,26 +47,30 @@ export default new Vuex.Store({
       new ImpulseEngine(1, "Pusher", 10, 25, 15, 100),
       new ImpulseEngine(2, "Shover", 15, 35, 20, 200)
     ],
-     computers: [
-       new Computer(1, "Dorito", 15, 0, 10, 50),
-       new Computer(2, "Pentium II", 20, 0, 15, 65)
-     ],
-     armours: [
-       new Armour(4, "Paper", 10, 0, "Ablative"),
-       new Armour(7, "Cardboard", 15, 0, "Ablative"),
-      ],
-      shipClasses: [
-        new ShipClass(2, "Scout", 50, 25, 75, 70),
-        new ShipClass(8, "Interceptor", 60, 30, 85, 80)
-      ],
-      weapons: [
-        new Weapon(1, "Laser Pointer", 10, 10, 15, 1000, 10, "Crystal", 100000),
-        new Weapon(2, "Totalator", 20, 25, 5, 100, 25, "Missile", 100)
-      ],
-      ammunitions: [
-        new Ammunition(6, "Red Crystal", 5, 0, "Energy", "Crystal", 100),
-        new Ammunition(8, "Tiem for bang", 15, 0, "Explosive", "Missile", 10)
-      ]
+    computers: [
+      new Computer(1, "Dorito", 15, 0, 10, 50),
+      new Computer(2, "Pentium II", 20, 0, 15, 65)
+    ],
+    armours: [
+      new Armour(4, "Paper", 10, 0, "Ablative"),
+      new Armour(7, "Cardboard", 15, 0, "Ablative")
+    ],
+    shipClasses: [
+      new ShipClass(2, "Scout", 50, 25, 75, 70),
+      new ShipClass(8, "Interceptor", 60, 30, 85, 80)
+    ],
+    weapons: [
+      new Weapon(1, "Laser Pointer", 10, 10, 15, 1000, 10, "Crystal", 100000),
+      new Weapon(2, "Totalator", 20, 25, 5, 100, 25, "Missile", 100)
+    ],
+    ammunitions: [
+      new Ammunition(6, "Red Crystal", 5, 0, "Energy", "Crystal", 100),
+      new Ammunition(8, "Tiem for bang", 15, 0, "Explosive", "Missile", 10)
+    ],
+    program: [],
+    subroutines: [],
+    conditions: [new Condition(null, "At Least", null, null, "self")],
+    actions: []
   },
   mutations: {
     setShip(state, ship) {
@@ -110,7 +119,7 @@ export default new Vuex.Store({
       state.ship.weapons.push(weapon);
     },
     removeShipWeapon(state, weaponId) {
-      for (let i=0; i<state.ship.weapons.length; i++) {
+      for (let i = 0; i < state.ship.weapons.length; i++) {
         if (state.ship.weapons[i].id === weaponId) {
           state.ship.weapons.splice(i, 1);
           break;
@@ -124,12 +133,18 @@ export default new Vuex.Store({
       state.ship.ammunitions.push(ammunition);
     },
     removeShipAmmunition(state, ammunitionId) {
-      for (let i=0; i<state.ship.ammunitions.length; i++) {
+      for (let i = 0; i < state.ship.ammunitions.length; i++) {
         if (state.ship.ammunitions[i].id === ammunitionId) {
           state.ship.ammunitions.splice(i, 1);
           break;
         }
       }
+    },
+    setCondition(state, condition) {
+      state.conditions.push(condition);
+    },
+    removeCondition(state, idx) {
+      state.conditions.splice(idx, 1);
     }
   },
   getters: {
@@ -141,8 +156,10 @@ export default new Vuex.Store({
     computers: state => state.computers,
     armours: state => state.armours,
     shipClasses: state => state.shipClasses,
-    weapons: state=> state.weapons,
-    ammunitions: state => state.ammunitions
+    weapons: state => state.weapons,
+    ammunitions: state => state.ammunitions,
+    program: state => state.program,
+    conditions: state => state.conditions
   },
   actions: {
     loadShip({ commit }, payload) {

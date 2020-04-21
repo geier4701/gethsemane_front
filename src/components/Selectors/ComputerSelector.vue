@@ -45,7 +45,10 @@ export default {
       }
     },
     addComputer() {
-      this.$store.commit("setShipComputer", this.listedComputers[this.selectedComputer]);
+      this.$store.commit(
+        "setShipComputer",
+        this.listedComputers[this.selectedComputer]
+      );
       this.$emit("validate-ship");
     }
   }

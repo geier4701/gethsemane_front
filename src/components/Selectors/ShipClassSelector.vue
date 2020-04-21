@@ -10,9 +10,9 @@
         {{ option.text }}
       </option>
     </select>
-    Maximum Weight: {{ listedShipClasses[selectedShipClass].weight }} Power Generation: 
-    {{ listedShipClasses[selectedShipClass].powerGen }} Battery Maximum: 
-    {{ listedShipClasses[selectedShipClass].batteryMax }} Health: 
+    Maximum Weight: {{ listedShipClasses[selectedShipClass].weight }} Power
+    Generation: {{ listedShipClasses[selectedShipClass].powerGen }} Battery
+    Maximum: {{ listedShipClasses[selectedShipClass].batteryMax }} Health:
     {{ listedShipClasses[selectedShipClass].health }}
   </div>
 </template>
@@ -46,7 +46,10 @@ export default {
       }
     },
     addShipClass() {
-      this.$store.commit("setShipClass", this.listedShipClasses[this.selectedShipClass]);
+      this.$store.commit(
+        "setShipClass",
+        this.listedShipClasses[this.selectedShipClass]
+      );
       this.$emit("validate-ship");
     }
   }

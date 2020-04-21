@@ -10,9 +10,10 @@
         {{ option.text }}
       </option>
     </select>
-    Mass: {{ listedImpulseEngines[selectedImpulseEngine].mass }} Repair Cost: 
-    {{ listedImpulseEngines[selectedImpulseEngine].repairCost }} Max Acceleration: 
-    {{ listedImpulseEngines[selectedImpulseEngine].maxAccel }} Energy Cost: 
+    Mass: {{ listedImpulseEngines[selectedImpulseEngine].mass }} Repair Cost:
+    {{ listedImpulseEngines[selectedImpulseEngine].repairCost }} Max
+    Acceleration:
+    {{ listedImpulseEngines[selectedImpulseEngine].maxAccel }} Energy Cost:
     {{ listedImpulseEngines[selectedImpulseEngine].energyCost }}
   </div>
 </template>
@@ -23,7 +24,9 @@ export default {
   data: function() {
     return {
       selectedImpulseEngine: this.getSelectedImpulseEngine(this.isLoadedShip),
-      impulseEngineOptions: this.formatImpulseEngines(this.$store.getters.impulseEngines)
+      impulseEngineOptions: this.formatImpulseEngines(
+        this.$store.getters.impulseEngines
+      )
     };
   },
   methods: {
@@ -46,8 +49,11 @@ export default {
       }
     },
     addImpulseEngine() {
-      this.$store.commit("setShipImpulseEngine", this.listedImpulseEngines[this.selectedImpulseEngine]);
-      this.$emit('validate-ship');
+      this.$store.commit(
+        "setShipImpulseEngine",
+        this.listedImpulseEngines[this.selectedImpulseEngine]
+      );
+      this.$emit("validate-ship");
     }
   }
 };

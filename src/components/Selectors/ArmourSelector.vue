@@ -11,7 +11,7 @@
       </option>
     </select>
     Mass: {{ listedArmours[selectedArmour].mass }} Repair Cost:
-    {{ listedArmours[selectedArmour].repairCost }} Armour Type: 
+    {{ listedArmours[selectedArmour].repairCost }} Armour Type:
     {{ listedArmours[selectedArmour].armourType }}
   </div>
 </template>
@@ -45,7 +45,10 @@ export default {
       }
     },
     addArmour() {
-      this.$store.commit("setShipArmour", this.listedArmours[this.selectedArmour]);
+      this.$store.commit(
+        "setShipArmour",
+        this.listedArmours[this.selectedArmour]
+      );
       this.$emit("validate-ship");
     }
   }

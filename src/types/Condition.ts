@@ -1,8 +1,8 @@
 export default class Condition {
   id: number | null;
   name: string;
-  atLeast: number;
-  atMost: number;
+  atLeast: number | null;
+  atMost: number | null;
   target: string;
   ammunitionType: string | null;
   componentName: string | null;
@@ -10,11 +10,11 @@ export default class Condition {
   constructor(
     id: number | null,
     name: string,
-    atLeast: number,
-    atMost: number,
+    atLeast: number | null = null,
+    atMost: number | null = null,
     target: string,
-    ammunitionType: string,
-    componentName: string
+    ammunitionType: string | null = null,
+    componentName: string | null = null
   ) {
     this.id = id;
     this.name = name;
