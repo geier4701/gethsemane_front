@@ -8,21 +8,8 @@
       <span v-if="condition.conditionType === 'AmmunitionLevel'">
         Ammunition Type: {{ condition.ammunitionType }}
       </span>
-      <span
-        v-if="
-          condition.conditionType === 'IsDisabled' &&
-            condition.target === 'self'
-        "
-      >
-        Component: {{ condition.component.name }}
-      </span>
-      <span
-        v-if="
-          condition.conditionType === 'IsDisabled' &&
-            condition.target === 'enemy'
-        "
-      >
-        Component: {{ condition.enemyComponent }}
+      <span v-if="condition.conditionType === 'IsDisabled'">
+        Component: {{ condition.component }}
       </span>
       <button @click="removeCondition(idx)">Delete</button>
     </p>
@@ -45,11 +32,18 @@
       </option>
     </select>
     <div v-if="selectedConditionType != ''">
-      Target:
-      <select v-model="target">
-        <option value="self">SELF</option>
-        <option value="enemy">ENEMY</option>
-      </select>
+      <span
+        v-if="
+          selectedConditionType != 'Distance' &&
+            selectedConditionType != 'AmmunitionLevel'
+        "
+      >
+        Target:
+        <select v-model="target">
+          <option value="self">SELF</option>
+          <option value="enemy">ENEMY</option>
+        </select>
+      </span>
       <p v-if="this.selectedConditionType === 'AmmunitionLevel'">
         Ammunition Type:
         <select v-model="ammunitionType">
@@ -97,7 +91,6 @@ export default {
     this.atMost = "";
     this.selectedComponent = {};
     this.enemyComponent = "";
-    this.addedConditions = {};
   },
   props: {
     componentOptions: {}
@@ -110,24 +103,31 @@ export default {
       atLeast: {},
       atMost: {},
       selectedComponent: {},
-      enemyComponent: {},
-      conditionIndex: 0,
-      addedConditions: this.$store.getters.conditions
+      enemyComponent: {}
     };
+  },
+  computed: {
+    addedConditions: function() {
+      return this.$store.getters.conditions;
+    }
   },
   methods: {
     addCondition() {
+      let selectedComponentName = {};
+      if (this.enemyComponent === "") {
+        selectedComponentName = this.selectedComponent.name;
+      } else {
+        selectedComponentName = this.enemyComponent;
+      }
       const builtCondition = {
+        id: null,
         conditionType: this.selectedConditionType,
         target: this.target,
         atLeast: this.atLeast,
         atMost: this.atMost,
         ammunitionType: this.ammunitionType,
-        component: this.selectedComponent,
-        enemyComponent: this.enemyComponent
+        component: selectedComponentName
       };
-      this.$set(this.addedConditions, this.conditionIndex, builtCondition);
-      this.conditionIndex++;
       this.$store.commit("setCondition", builtCondition);
       this.selectedConditionType = "";
       this.target = "self";
@@ -139,7 +139,6 @@ export default {
       this.$emit("validate-program");
     },
     removeCondition(idx) {
-      this.$delete(this.addedConditions, idx);
       this.$store.commit("removeCondition", idx);
       this.$emit("validate-program");
     }

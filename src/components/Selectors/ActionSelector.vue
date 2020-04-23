@@ -3,10 +3,10 @@
     <p v-for="(action, idx) in addedActions" :key="idx">
       Name: {{ action.actionType }}
       <span v-if="action.actionType === 'FireWeapon'">
-        Weapon: {{ action.selectedComponent.name }}
+        Weapon: {{ action.selectedComponentName }}
       </span>
       <span v-if="action.actionType === 'AttemptRepairs'">
-        Component to repair: {{ action.selectedComponent.name }}
+        Component to repair: {{ action.selectedComponentName }}
       </span>
       <span v-if="action.actionType === 'Distance'">
         Distance from enemy: {{ action.distance }}
@@ -36,29 +36,31 @@
         </option>
       </select>
     </div>
-    <div v-if="selectedActionType === 'FireImpulse'">
-      <!-- TODO: Update this once fire impulse is more usable on back end -->
-    </div>
-    <div v-if="selectedActionType === 'FireWeapon'">
-      <select v-model="selectedComponent">
-        <option
-          v-for="option in this.weaponOptions"
-          v-bind:key="option.key"
-          v-bind:value="option.value"
-        >
-          {{ option.text }}
-        </option>
-      </select>
-    </div>
-    <div v-if="selectedActionType === 'Jump'">
-      <label for="distance">Distance from the enemy: </label>
-      <input name="distance" v-model="distance" />
-    </div>
-    <div
-      v-if="selectedActionType === 'Delay' || selectedActionType === 'Scan'"
-    ></div>
     <div v-if="selectedActionType != ''">
-      <button @click="addAction">Add</button>
+      <div v-if="selectedActionType === 'FireImpulse'">
+        <!-- TODO: Update this once fire impulse is more usable on back end -->
+      </div>
+      <div v-if="selectedActionType === 'FireWeapon'">
+        <select v-model="selectedComponent">
+          <option
+            v-for="option in this.weaponOptions"
+            v-bind:key="option.key"
+            v-bind:value="option.value"
+          >
+            {{ option.text }}
+          </option>
+        </select>
+      </div>
+      <div v-if="selectedActionType === 'Jump'">
+        <label for="distance">Distance from the enemy: </label>
+        <input name="distance" v-model="distance" />
+      </div>
+      <div
+        v-if="selectedActionType === 'Delay' || selectedActionType === 'Scan'"
+      ></div>
+      <div v-if="selectedActionType != ''">
+        <button @click="addAction">Add</button>
+      </div>
     </div>
   </div>
 </template>
@@ -70,35 +72,35 @@ export default {
     componentOptions: {},
     weaponOptions: {}
   },
-  created() {
-    this.addedActions = {};
-  },
   data: function() {
     return {
-      addedActions: this.$store.getters.actions,
       selectedActionType: "",
       selectedComponent: {},
       distance: "",
       actionIndex: 0
     };
   },
+  computed: {
+    addedActions: function() {
+      return this.$store.getters.actions;
+    }
+  },
   methods: {
     addAction() {
       const builtAction = {
+        id: null,
         actionType: this.selectedActionType,
-        selectedComponent: this.selectedComponent,
+        selectedComponentName: this.selectedComponent.name,
         distance: this.distance
       };
-      this.$set(this.addedActions, this.actionIndex, builtAction);
-      this.actionIndex++;
       this.$store.commit("setAction", builtAction);
+      this.actionIndex++;
       this.selectedActionType = "";
       this.selectedComponent = {};
       this.distance = "";
       this.$emit("validate-program");
     },
     removeAction(idx) {
-      this.$delete(this.addedActions, idx);
       this.$store.commit("removeAction", idx);
       this.$emit("validate-program");
     }

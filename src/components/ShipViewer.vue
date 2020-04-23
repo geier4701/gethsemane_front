@@ -1,5 +1,6 @@
 <template>
   <div>
+    <p><button @click="saveShip">Save Ship</button></p>
     <label for="shipName">Your ship name: </label>
     <input
       @change="addShipName"
@@ -46,7 +47,8 @@
       :isLoadedShip="this.getIsLoaded()"
       @validate-ship="validateShip"
     />
-    <ProgramCreator :listedSubroutines="this.subroutineList" />
+    Create or edit program:
+    <ProgramCreator />
   </div>
 </template>
 
@@ -92,7 +94,7 @@ export default {
     this.shipClassList = this.listById(this.$store.getters.shipClasses);
     this.weaponList = this.listById(this.$store.getters.weapons);
     this.ammoList = this.listById(this.$store.getters.ammunitions);
-    this.subroutineList = this.listById(this.loadProgram());
+    this.loadProgram();
   },
   data: function() {
     return {
@@ -105,6 +107,15 @@ export default {
       weaponList: [],
       ammoList: []
     };
+  },
+  computed: {
+    programName: function() {
+      if (this.getIsLoaded()) {
+        return this.$store.getters.program.name;
+      } else {
+        return "";
+      }
+    }
   },
   methods: {
     addShipName(event) {
@@ -122,14 +133,20 @@ export default {
     },
     loadProgram() {
       if (this.getIsLoaded()) {
-        return this.$store.getters.program.subroutines;
-      } else {
-        return [];
+        this.$store.commit(
+          "setSubroutines",
+          this.$store.getters.ship.program.subroutines
+        );
       }
     },
     // TODO: Check ship weight whenever a component is added/changed
     validateShip() {
       console.log("validated!");
+    },
+    saveShip() {
+      // Format into expected json
+      const payload = { ship: {} };
+      this.$store.dispatch("saveShip", payload);
     }
   }
 };

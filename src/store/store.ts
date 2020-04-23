@@ -68,10 +68,10 @@ export default new Vuex.Store({
       new Ammunition(6, "Red Crystal", 5, 0, "Energy", "Crystal", 100),
       new Ammunition(8, "Tiem for bang", 15, 0, "Explosive", "Missile", 10)
     ],
-    program: [],
+    programs: [],
     subroutines: [],
-    conditions: [new Condition(null, "At Least", null, null, "self")],
-    actions: [new Action(null, "Delay", null, null, null)]
+    conditions: [],
+    actions: []
   },
   mutations: {
     setShip(state, ship) {
@@ -144,14 +144,42 @@ export default new Vuex.Store({
     setCondition(state, condition) {
       state.conditions.push(condition);
     },
+    setConditions(state, conditions) {
+      state.conditions = conditions;
+    },
     removeCondition(state, idx) {
       state.conditions.splice(idx, 1);
     },
     setAction(state, action) {
       state.actions.push(action);
     },
+    setActions(state, actions) {
+      state.actions = actions;
+    },
     removeAction(state, idx) {
       state.actions.splice(idx, 1);
+    },
+    setSubroutine(state, subroutine) {
+      state.subroutines.push(subroutine);
+    },
+    setSubroutines(state, subroutines) {
+      state.subroutines = subroutines;
+    },
+    removeSubroutine(state, idx) {
+      state.subroutines.splice(idx, 1);
+    },
+    clearSubroutines(state) {
+      state.subroutines = [];
+    },
+    clearActionsConditions(state) {
+      state.conditions = [];
+      state.actions = [];
+    },
+    setProgram(state, program) {
+      state.programs.push(program);
+    },
+    setShipProgram(state, program) {
+      state.ship.program = program;
     }
   },
   getters: {
@@ -165,7 +193,8 @@ export default new Vuex.Store({
     shipClasses: state => state.shipClasses,
     weapons: state => state.weapons,
     ammunitions: state => state.ammunitions,
-    program: state => state.program,
+    programs: state => state.programs,
+    subroutines: state => state.subroutines,
     conditions: state => state.conditions,
     actions: state => state.actions
   },
@@ -183,6 +212,9 @@ export default new Vuex.Store({
           commit("set" + componentType, response[componentType]);
         }
       );
+    },
+    saveShip({ commit }, payload) {
+      // SAVE THIS SHIP
     }
   },
   modules: {}
